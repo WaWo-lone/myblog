@@ -1,0 +1,40 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>回复</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script type="text/javascript" src="{% static 'jquery/jquery-3.3.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'popper/popper-1.14.4.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'layer/layer.js' %}"></script>
+</head>
+
+<body>
+    <form
+    action="{% url 'comment:post_comment' article_id parent_comment_id %}"
+    method="POST"
+    id="reply_form"
+    >
+        {% csrf_token %}
+        <div class="form-group">
+            <div id="test">
+                {{ comment_form.media }}
+                {{ comment_form.body }}
+            </div>
+        </div>
+        <button class="btn btn-primary" id="btn">发送</button>
+    </form>
+
+
+<script>
+    $(function(){
+        $(".django-ckeditor-widget").removeAttr('style');
+    });
+
+</script>
+
+</body>
+</html>

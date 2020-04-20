@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %} 用户信息 {% endblock title %}
+
+{% block content %}
+<div style="margin-left: 100px">
+    <br>
+    <div>
+        <b><span>用户名：{{ request.users.username }}</span></b>
+        · <a href="{% url 'user:edit' %}">修改资料</a>
+    </div>
+    <br>
+    <div>
+        <b><span>头像：</span></b><img src="{{ request.users.avatar }}" alt="" style="max-width: 7%; border-radius: 15%;">
+    </div>
+    <br>
+    <!-- phone -->
+    <div>
+        <b><span>电话：{{ request.users.phone }}</span></b>
+    </div>
+    <!-- bio -->
+    <div>
+        <b><span>简介：</span></b>
+        <!-- 文本区域 -->
+        <textarea type="text" class="form-control" rows="12" style="width: 300px">{{ request.users.bio }}</textarea>
+    </div>
+</div>
+
+{% endblock content %}

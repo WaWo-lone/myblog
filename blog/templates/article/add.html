@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %} 写文章 {% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <br>
+            <span style="color: red" id="error">{{ msg }}</span>
+            <form method="post" action="." enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+
+                    <label for="title">文章标题</label>
+
+                    <input type="text" class="form-control" id="title" name="title">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="column">栏目</label>
+                    <select class="form-control"
+                            id="column"
+                            name="column"
+                    >
+                    <option value="none">请选择栏目..</option>
+                    {% for column in columns %}
+                        <option value="{{ column.id }}">{{ column }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="body">文章正文</label>
+
+                    <textarea type="text" class="form-control" id="body" name="body" rows="12"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">完成</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <script src="/static/jquery/jquery-3.3.1.js">
+        $(function () {
+            $('.form-control').mouseenter(function () {
+                 $('#error').html('')
+             })
+        })
+    </script>
+{% endblock content %}

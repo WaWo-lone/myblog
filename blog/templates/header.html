@@ -1,0 +1,38 @@
+<!-- 定义导航栏 -->
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <!-- 导航栏商标 -->
+        <a class="navbar-brand" href="{% url 'user:mine' %}">我的博客</a>
+        <!-- 导航入口 -->
+        <div>
+            <ul class="nav navbar-nav navbar-right ">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{% url 'article:index' %}">首页</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{% url 'article:article_list' %}">个人文章</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{% url 'article:article_add' %}">写文章</a>
+                </li>
+                 {% if request.users.id %}
+                    <!-- 如果用户已经登录，则显示用户名下拉框 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {{ request.users.username }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                          <li><a class="dropdown-item" href="{% url 'user:logout' %}">退出登录</a></li>
+                        </ul>
+                    </li>
+                    <!-- 如果用户未登录，则显示 “登录” -->
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user:login' %}">登录</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

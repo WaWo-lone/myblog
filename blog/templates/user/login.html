@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %} 登录 {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <br>
+            <span style="color: red;">{{ msg }}</span>
+            <form method="post" action=".">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input style="width: 300px" type="text" class="form-control" id="username" name="username">
+                </div>
+                <!-- 密码 -->
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input style="width: 300px" type="password" class="form-control" id="password" name="password">
+                </div>
+                <!-- 提交按钮 -->
+                <button type="submit" class="btn btn-primary">登录</button>
+                <a href="{% url 'user:register' %}" class="btn btn-primary">注册入口</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    首页
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'article:index' %}?search={{ search }}">
+                    最新
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'article:index' %}?order=total_views&search={{ search }}">
+                    最热
+                </a>
+            </li>
+        </ol>
+    </nav>
+
+    <div class="row" style="margin-left: 1px">
+        <div class="col-auto mr-auto">
+            <form class="form-inline" >
+                <label class="sr-only">content</label>
+                <input type="text"
+                    class="form-control mb-2 mr-sm-2"
+                    name="search"
+                    placeholder="搜索文章..."
+                    required
+                >
+            </form>
+        </div>
+    </div>
+
+    {% if search %}
+        {% if current_page %}
+            <h4><span style="color: red">"{{ search }}"</span>的搜索结果如下：</h4>
+            <hr>
+        {% else %}
+            <h4>暂无<span style="color: red">"{{ search }}"</span>有关的文章。</h4>
+            <hr>
+        {% endif %}
+    {% endif %}
+    <br>
+    <div class="row mt-2" style="margin-left: 1px;">
+        <div>
+            {% for article in current_page %}
+
+                    <div class="col-12">
+
+                    <!-- 栏目 -->
+                    {% if article.column %}
+                    <button type="button"
+                        class="btn btn-sm mb-2
+                            {% if article.column.title == 'Django' %}
+                                btn-success
+                            {% elif article.column.title == 'MySQL' %}
+                                btn-danger
+                            {% elif article.column.title == 'HTML' %}
+                                btn-warning
+                            {% elif article.column.title == '随记' %}
+                                btn-warning
+                            {% elif article.column.title == 'Python' %}
+                                btn-danger
+                            {% elif article.column.title == '简介' %}
+                                btn-success
+                            {% endif %}
+                        "
+                    >
+                        {{ article.column }}
+                    </button>
+                    {% endif %}
+                    <!-- 摘要 -->
+                    <div>
+                        <p style="color: gray;">
+                            {{ article.body|slice:'100' }}...
+                        </p>
+                    </div>
+                    <!-- 注脚 -->
+                    <p>
+                        <!-- 附加信息 -->
+                        <span style="color: green;">
+                            {{ article.total_views }} 浏览&nbsp;&nbsp;&nbsp;
+                        </span>
+                        <span style="color: blue;">
+                            {{ article.created|date:'Y-m-d' }} 发布&nbsp;&nbsp;&nbsp;
+                        </span>
+                        <span style="color: darkred;">
+                            {{ article.updated|date:'Y-m-d' }} 更新
+                        </span>
+                        <span style="color: #1E9FFF">
+                            <a href="{% url 'article:article_detail' article.id %}">阅读本文</a>
+                        </span>
+                    </p>
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <!-- 页码导航 -->
+    <div style="text-align: center; margin-top:50px">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if current_page.has_previous %}
+                <li>
+                  <a href="?page={{ current_page.previous_page_number }}&order={{ order }}&search={{ search }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                  <a href="" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+            {% endif %}
+
+            {% for foo in current_range %}
+                {% if current_page.number == foo %}
+                    <li class="active"><a href="?page={{ current_page.number }}&order={{ order }}&search={{ search }}">{{ foo }}</a></li>
+                {% else %}
+                    <li><a href="?page={{ foo }}&order={{ order }}&search={{ search }}">{{ foo }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if current_page.has_next %}
+                <li>
+                  <a href="?page={{ current_page.next_page_number }}&order={{ order }}&search={{ search }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                  <a href="" aria-label="Next">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    </div>
+
+
+</div>
+
+{% endblock content %}
